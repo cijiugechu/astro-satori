@@ -1,0 +1,27 @@
+{
+  "name": "core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
+  "bin": {
+    "core-cli": "dist/bin/index.js"
+  },
+  "scripts": {
+    "build-fast": "tsup index.ts bin/index.ts --format cjs,esm --dts",
+    "build": "pnpm run build-fast -- --dts-resolve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.5"
+  }
+}

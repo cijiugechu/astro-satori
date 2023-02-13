@@ -4,6 +4,8 @@ import addClasses from './add-classes.mjs'
 
 // https://astro.build/config
 export default defineConfig({
+  base: '/astro-satori',
+  site: 'https://cijiugechu.github.io/',
   // Enable Custom Markdown options, plugins, etc.
   markdown: {
     remarkPlugins: ['remark-code-titles'],

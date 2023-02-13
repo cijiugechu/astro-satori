@@ -14,8 +14,8 @@
     "dist"
   ],
   "scripts": {
-    "build:debug": "tsup --config tsup.config.ts",
-    "build": "tsup"
+    "build:debug": "tsup --config tsup.debug.ts",
+    "build": "tsup --config tsup.config.ts"
   },
   "keywords": [
     "astro",

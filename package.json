@@ -26,7 +26,9 @@
   "bugs": "https://github.com/jufuku-haijo/ts-lib-starter/issues",
   "scripts": {
     "format": "prettier --write . --ignore-unkown",
-    "build": "pnpm --filter core run build",
+    "build:core": "pnpm run --filter astro-satori build",
+    "build:playground": "pnpm run --filter playground build",
+    "build": "pnpm run build:core && pnpm run build:playground",
     "test": "vitest",
     "test:watch": "vitest -w",
     "prepublishOnly": "pnpm run build"

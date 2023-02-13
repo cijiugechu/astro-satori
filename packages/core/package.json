@@ -17,7 +17,13 @@
     "build:debug": "tsup --config tsup.config.ts",
     "build": "tsup"
   },
-  "keywords": ["astro", "satori", "open-graph", "og", "integration"],
+  "keywords": [
+    "astro",
+    "satori",
+    "open-graph",
+    "og",
+    "integration"
+  ],
   "author": "nemurubaka",
   "license": "MIT",
   "devDependencies": {

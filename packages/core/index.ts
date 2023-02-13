@@ -7,8 +7,8 @@ import { fileURLToPath } from 'url'
 const titleRe = /\<title\>.+\<\/title\>/g
 
 const genOgAndReplace = async (url: URL | undefined) => {
-  if(!url) {
-    return 
+  if (!url) {
+    return
   }
 
   const pathname = fileURLToPath(url)
@@ -17,8 +17,7 @@ const genOgAndReplace = async (url: URL | undefined) => {
 
   const matched = html.match(titleRe)
 
-  if(matched){
-
+  if (matched) {
     const titleText = matched[0].replace('<title>', '').replace('</title>', '')
 
     const svgSource = await generateOgImage(titleText)
@@ -39,24 +38,21 @@ const genOgAndReplace = async (url: URL | undefined) => {
   }
 }
 
-
-export interface SatoriIntegrationOptions {
-  
-}
+export interface SatoriIntegrationOptions {}
 
 function Satori(options: SatoriIntegrationOptions): AstroIntegration {
   return {
-    name: "astro-satori",
+    name: 'astro-satori',
     hooks: {
-      "astro:build:done": async ({ dir, routes }) => {
+      'astro:build:done': async ({ dir, routes }) => {
         const isSSR = routes.length === 0
 
-        if(!isSSR) {
+        if (!isSSR) {
           await Promise.all(routes.map(r => genOgAndReplace(r.distURL)))
         }
       },
     },
-  };
+  }
 }
 
 export default Satori

@@ -11,10 +11,10 @@ const ogImage = (text: string) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: 'IBM Plex Mono'
+        fontFamily: 'IBM Plex Mono',
       },
-      children: text
-    }
+      children: text,
+    },
   }
 }
 
@@ -60,6 +60,4 @@ const generateOgImage = async (mytext: string) => {
   return res
 }
 
-export {
-  generateOgImage
-}
+export { generateOgImage }

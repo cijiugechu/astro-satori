@@ -8,7 +8,7 @@ export default defineConfig({
   clean: true,
   outExtension: () => {
     return {
-      'js': '.mjs'
+      js: '.mjs',
     }
-  }
+  },
 })

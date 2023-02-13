@@ -1,6 +1,6 @@
 {
   "name": "astro-satori",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "This Astro integration brings satori to your Astro project.",
   "private": false,
   "type": "module",
@@ -28,6 +28,12 @@
   ],
   "author": "nemurubaka",
   "license": "MIT",
+  "homepage": "https://github.com/cijiugechu/astro-satori",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cijiugechu/astro-satori.git"
+  },
+  "bugs": "https://github.com/cijiugechu/astro-satori/issues",
   "devDependencies": {
     "@types/node": "^18.11.18",
     "astro": "^2.0.10",

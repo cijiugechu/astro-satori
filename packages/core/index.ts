@@ -13,11 +13,10 @@ import { FrontMatter } from './types.js'
 
 type ReactNode = Parameters<typeof satori>[0]
 
-
 const genOgAndReplace = async (
   url: URL | undefined,
-  component: string, 
-  element?: ReactNode, 
+  component: string,
+  element?: ReactNode,
   optionsFactory?: () => Promise<SatoriOptions>
 ) => {
   if (!url) {
@@ -35,7 +34,9 @@ const genOgAndReplace = async (
 
   const componentAbsolutePath = join(cwd(), component)
 
-  const componentSource = await readFile(componentAbsolutePath, { encoding: 'utf-8' })
+  const componentSource = await readFile(componentAbsolutePath, {
+    encoding: 'utf-8',
+  })
 
   const parsedFrontMatter = grayMatter(componentSource).data
 
@@ -43,27 +44,22 @@ const genOgAndReplace = async (
 
   const html = await readFile(pathname, { encoding: 'utf-8' })
 
-  
-    const svgSource = await generateOgImage(parsedFrontMatter as FrontMatter)
+  const svgSource = await generateOgImage(parsedFrontMatter as FrontMatter)
 
-    const htmlBase = basename(pathname, '.html')
+  const htmlBase = basename(pathname, '.html')
 
-    const svgPath = pathname.replace(`${htmlBase}.html`, `og-${htmlBase}.svg`)
+  const svgPath = pathname.replace(`${htmlBase}.html`, `og-${htmlBase}.svg`)
 
-    await writeFile(svgPath, svgSource, { encoding: 'utf-8' })
+  await writeFile(svgPath, svgSource, { encoding: 'utf-8' })
 
-    const relativeSvgPath = `/${basename(svgPath)}`
+  const relativeSvgPath = `/${basename(svgPath)}`
 
-    const ogMetaToBeInserted = `<meta property="og:image" content="${relativeSvgPath}" >`
+  const ogMetaToBeInserted = `<meta property="og:image" content="${relativeSvgPath}" >`
 
-    const newHtml = html.replace('</head>', `${ogMetaToBeInserted}</head>`)
+  const newHtml = html.replace('</head>', `${ogMetaToBeInserted}</head>`)
 
-    await writeFile(pathname, newHtml, { encoding: 'utf-8' })
-  
+  await writeFile(pathname, newHtml, { encoding: 'utf-8' })
 }
-
-
-
 
 export interface SatoriIntegrationOptions {
   satoriOptionsFactory?: () => Promise<SatoriOptions>
@@ -71,10 +67,7 @@ export interface SatoriIntegrationOptions {
 }
 
 function Satori(options: SatoriIntegrationOptions): AstroIntegration {
-  const {
-    satoriElement,
-    satoriOptionsFactory
-  } = options
+  const { satoriElement, satoriOptionsFactory } = options
 
   return {
     name: 'astro-satori',
@@ -84,21 +77,20 @@ function Satori(options: SatoriIntegrationOptions): AstroIntegration {
 
         if (!isSSR) {
           try {
-
-          await Promise.all(routes.map(r => genOgAndReplace(
-            r.distURL,
-            r.component,
-            satoriElement,
-            satoriOptionsFactory
-          )))
-
-          console.log(
-            kleur.bgGreen('open graph images generated')
-          )
-          }catch(e: unknown) {
-            console.error(
-              kleur.bgRed('failed to generate open graph images')
+            await Promise.all(
+              routes.map(r =>
+                genOgAndReplace(
+                  r.distURL,
+                  r.component,
+                  satoriElement,
+                  satoriOptionsFactory
+                )
+              )
             )
+
+            console.log(kleur.bgGreen('open graph images generated'))
+          } catch (e: unknown) {
+            console.error(kleur.bgRed('failed to generate open graph images'))
           }
         }
       },

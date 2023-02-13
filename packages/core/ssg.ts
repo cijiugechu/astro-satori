@@ -31,8 +31,8 @@ const defaultOgImageELement = ({ title, description, author }: FrontMatter) => {
               margin: '2.5rem',
               width: '88%',
               height: '80%',
-            }
-          }
+            },
+          },
         },
         {
           type: 'div',
@@ -69,10 +69,8 @@ const defaultOgImageELement = ({ title, description, author }: FrontMatter) => {
                           maxHeight: '84%',
                           overflow: 'hidden',
                         },
-                        children: [
-                          title
-                        ]
-                      }
+                        children: [title],
+                      },
                     },
                     {
                       type: 'div',
@@ -96,37 +94,38 @@ const defaultOgImageELement = ({ title, description, author }: FrontMatter) => {
                                   style: {
                                     color: 'transparent',
                                   },
-                                  children: [`"`]
-                                }
+                                  children: [`"`],
+                                },
                               },
                               {
                                 type: 'span',
                                 props: {
-                                  style: { overflow: 'hidden', fontWeight: 'bold' },
-                                  children: [
-                                    author
-                                  ]
-                                }
-                              }
-                            ]
+                                  style: {
+                                    overflow: 'hidden',
+                                    fontWeight: 'bold',
+                                  },
+                                  children: [author],
+                                },
+                              },
+                            ],
                           },
                           {
                             type: 'span',
                             props: {
                               style: { overflow: 'hidden', fontWeight: 'bold' },
-                              children: [title]
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        }
-      ]
+                              children: [title],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
     },
   }
 }
@@ -168,7 +167,4 @@ const defaultGenerateOptions = async () => {
   return options as SatoriOptions
 }
 
-export { 
-  defaultGenerateOptions,
-  defaultOgImageELement
-}
+export { defaultGenerateOptions, defaultOgImageELement }

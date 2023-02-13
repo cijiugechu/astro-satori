@@ -8,6 +8,7 @@ import kleur from 'kleur'
 import { join } from 'path'
 import { basename } from 'path/win32'
 import { defaultOgImageELement, defaultGenerateOptions } from './ssg.js'
+import { ogTemplate } from './ogTemplate.js'
 import { fileURLToPath } from 'url'
 import { FrontMatter } from './types.js'
 
@@ -29,7 +30,11 @@ const genOgAndReplace = async (
 
     const options = await generateOptions()
     const res = await satori(ogImageELement(frontmatter), options)
-    return res
+    return {
+      svgSource: res,
+      width: (options as any).width ?? 1200,
+      height: (options as any).height ?? 630
+    }
   }
 
   const componentAbsolutePath = join(cwd(), component)
@@ -44,7 +49,7 @@ const genOgAndReplace = async (
 
   const html = await readFile(pathname, { encoding: 'utf-8' })
 
-  const svgSource = await generateOgImage(parsedFrontMatter as FrontMatter)
+  const { svgSource, width, height } = await generateOgImage(parsedFrontMatter as FrontMatter)
 
   const htmlBase = basename(pathname, '.html')
 
@@ -54,7 +59,13 @@ const genOgAndReplace = async (
 
   const relativeSvgPath = `/${basename(svgPath)}`
 
-  const ogMetaToBeInserted = `<meta property="og:image" content="${relativeSvgPath}" >`
+  const ogMetaToBeInserted = ogTemplate({
+    relativePath: relativeSvgPath,
+    width,
+    height,
+    title: parsedFrontMatter.title,
+    description: parsedFrontMatter?.description ?? ''
+  })
 
   const newHtml = html.replace('</head>', `${ogMetaToBeInserted}</head>`)
 

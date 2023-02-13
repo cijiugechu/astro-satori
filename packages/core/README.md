@@ -1,6 +1,6 @@
 # astro-satori
 
-This `Astro` integration brings [satori](https://github.com/vercel/satori) to your Astro project.
+This `Astro` integration brings open graph images to your project, powered by [satori](https://github.com/vercel/satori)
 
 ## Install
 

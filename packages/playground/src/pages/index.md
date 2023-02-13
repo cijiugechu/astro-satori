@@ -1,6 +1,8 @@
 ---
 layout: ../layouts/main.astro
 title: Astro with Remark Plugins
+author: myself
+description: demo description
 ---
 
 # Heading 1

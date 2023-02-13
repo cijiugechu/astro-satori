@@ -1,26 +1,50 @@
 import type { AstroIntegration } from 'astro'
+import type { SatoriOptions } from 'satori'
+import satori from 'satori'
 import { readFile, writeFile } from 'fs/promises'
+import { cwd } from 'process'
+import grayMatter from 'gray-matter'
+import kleur from 'kleur'
+import { join } from 'path'
 import { basename } from 'path/win32'
-import { generateOgImage } from './ssg.js'
+import { defaultOgImageELement, defaultGenerateOptions } from './ssg.js'
 import { fileURLToPath } from 'url'
+import { FrontMatter } from './types.js'
 
-const titleRe = /\<title\>.+\<\/title\>/g
+type ReactNode = Parameters<typeof satori>[0]
 
-const genOgAndReplace = async (url: URL | undefined) => {
+
+const genOgAndReplace = async (
+  url: URL | undefined,
+  component: string, 
+  element?: ReactNode, 
+  optionsFactory?: () => Promise<SatoriOptions>
+) => {
   if (!url) {
     return
   }
+
+  const generateOgImage = async (frontmatter: FrontMatter) => {
+    const generateOptions = optionsFactory ?? defaultGenerateOptions
+    const ogImageELement = element ?? defaultOgImageELement
+
+    const options = await generateOptions()
+    const res = await satori(ogImageELement(frontmatter), options)
+    return res
+  }
+
+  const componentAbsolutePath = join(cwd(), component)
+
+  const componentSource = await readFile(componentAbsolutePath, { encoding: 'utf-8' })
+
+  const parsedFrontMatter = grayMatter(componentSource).data
 
   const pathname = fileURLToPath(url)
 
   const html = await readFile(pathname, { encoding: 'utf-8' })
 
-  const matched = html.match(titleRe)
-
-  if (matched) {
-    const titleText = matched[0].replace('<title>', '').replace('</title>', '')
-
-    const svgSource = await generateOgImage(titleText)
+  
+    const svgSource = await generateOgImage(parsedFrontMatter as FrontMatter)
 
     const htmlBase = basename(pathname, '.html')
 
@@ -35,20 +59,47 @@ const genOgAndReplace = async (url: URL | undefined) => {
     const newHtml = html.replace('</head>', `${ogMetaToBeInserted}</head>`)
 
     await writeFile(pathname, newHtml, { encoding: 'utf-8' })
-  }
+  
 }
 
-export interface SatoriIntegrationOptions {}
+
+
+
+export interface SatoriIntegrationOptions {
+  satoriOptionsFactory?: () => Promise<SatoriOptions>
+  satoriElement?: (frontmatter: FrontMatter) => ReactNode
+}
 
 function Satori(options: SatoriIntegrationOptions): AstroIntegration {
+  const {
+    satoriElement,
+    satoriOptionsFactory
+  } = options
+
   return {
     name: 'astro-satori',
     hooks: {
-      'astro:build:done': async ({ dir, routes }) => {
+      'astro:build:done': async ({ routes }) => {
         const isSSR = routes.length === 0
 
         if (!isSSR) {
-          await Promise.all(routes.map(r => genOgAndReplace(r.distURL)))
+          try {
+
+          await Promise.all(routes.map(r => genOgAndReplace(
+            r.distURL,
+            r.component,
+            satoriElement,
+            satoriOptionsFactory
+          )))
+
+          console.log(
+            kleur.bgGreen('open graph images generated')
+          )
+          }catch(e: unknown) {
+            console.error(
+              kleur.bgRed('failed to generate open graph images')
+            )
+          }
         }
       },
     },

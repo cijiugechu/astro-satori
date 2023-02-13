@@ -1,6 +1,7 @@
-import satori, { SatoriOptions } from 'satori'
+import type { SatoriOptions } from 'satori'
+import type { FrontMatter } from './types.js'
 
-const ogImage = (text: string) => {
+const defaultOgImageELement = ({ title, description, author }: FrontMatter) => {
   return {
     type: 'div',
     props: {
@@ -13,12 +14,124 @@ const ogImage = (text: string) => {
         justifyContent: 'center',
         fontFamily: 'IBM Plex Mono',
       },
-      children: text,
+      children: [
+        {
+          type: 'div',
+          props: {
+            style: {
+              position: 'absolute',
+              top: '-1px',
+              right: '-1px',
+              border: '4px solid #000',
+              background: '#ecebeb',
+              opacity: '0.9',
+              borderRadius: '4px',
+              display: 'flex',
+              justifyContent: 'center',
+              margin: '2.5rem',
+              width: '88%',
+              height: '80%',
+            }
+          }
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              border: '4px solid #000',
+              background: '#fefbfb',
+              borderRadius: '4px',
+              display: 'flex',
+              justifyContent: 'center',
+              margin: '2rem',
+              width: '88%',
+              height: '80%',
+            },
+            children: [
+              {
+                type: 'div',
+                props: {
+                  style: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    margin: '20px',
+                    width: '90%',
+                    height: '90%',
+                  },
+                  children: [
+                    {
+                      type: 'p',
+                      props: {
+                        style: {
+                          fontSize: 72,
+                          fontWeight: 'bold',
+                          maxHeight: '84%',
+                          overflow: 'hidden',
+                        },
+                        children: [
+                          title
+                        ]
+                      }
+                    },
+                    {
+                      type: 'div',
+                      props: {
+                        style: {
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          marginBottom: '8px',
+                          fontSize: 28,
+                        },
+                        children: [
+                          {
+                            type: 'span',
+                            children: [
+                              'by',
+                              '  ',
+                              {
+                                type: 'span',
+                                props: {
+                                  style: {
+                                    color: 'transparent',
+                                  },
+                                  children: [`"`]
+                                }
+                              },
+                              {
+                                type: 'span',
+                                props: {
+                                  style: { overflow: 'hidden', fontWeight: 'bold' },
+                                  children: [
+                                    author
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            type: 'span',
+                            props: {
+                              style: { overflow: 'hidden', fontWeight: 'bold' },
+                              children: [title]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
     },
   }
 }
 
-const generateOptions = async () => {
+const defaultGenerateOptions = async () => {
   // Regular Font
   const fontFileRegular = await fetch(
     'https://www.1001fonts.com/download/font/ibm-plex-mono.regular.ttf'
@@ -31,7 +144,8 @@ const generateOptions = async () => {
   )
   const fontBold: ArrayBuffer = await fontFileBold.arrayBuffer()
 
-  const options: SatoriOptions = {
+  //@ts-ignore
+  const options = {
     width: 1200,
     height: 630,
     embedFont: true,
@@ -51,13 +165,10 @@ const generateOptions = async () => {
     ],
   }
 
-  return options
+  return options as SatoriOptions
 }
 
-const generateOgImage = async (mytext: string) => {
-  const options = await generateOptions()
-  const res = await satori(ogImage(mytext), options)
-  return res
+export { 
+  defaultGenerateOptions,
+  defaultOgImageELement
 }
-
-export { generateOgImage }

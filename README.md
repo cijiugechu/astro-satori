@@ -2,6 +2,8 @@
 
 This `Astro` integration brings [satori](https://github.com/vercel/satori) to your Astro project.
 
+See [example](/packages/playground/)
+
 ## Install
 
 ```shell

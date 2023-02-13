@@ -4,11 +4,11 @@
     "module": "esnext",
     "strict": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
-    "allowJs": false,
+    "allowJs": true,
     "noEmit": true,
     "resolveJsonModule": true
   },

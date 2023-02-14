@@ -16,5 +16,5 @@ export default defineConfig({
       [addClasses, { 'h1,h2,h3': 'title' }],
     ],
   },
-  integrations: [satori({})],
+  integrations: [satori()],
 })

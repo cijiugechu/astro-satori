@@ -92,7 +92,7 @@ export interface SatoriIntegrationOptions {
   satoriElement?: (frontmatter: FrontMatter) => ReactNode
 }
 
-function Satori(options: SatoriIntegrationOptions): AstroIntegration {
+function Satori(options: SatoriIntegrationOptions = {}): AstroIntegration {
   const { satoriElement, satoriOptionsFactory } = options
 
   let astroConfig: AstroConfig
@@ -105,16 +105,16 @@ function Satori(options: SatoriIntegrationOptions): AstroIntegration {
       },
 
       'astro:build:done': async ({ routes }) => {
-        const isSSR = routes.length === 0
+        const isSSR = astroConfig.output === 'server'
 
-        if (!(astroConfig as any)?.site) {
+        if (!astroConfig?.site) {
           console.error(kleur.bgRed('[astro-satori]: error! site is required.'))
           return
         }
 
-        const site: string = new URL(
-          (astroConfig as any)?.base ?? '/',
-          (astroConfig as any).site
+        const site = new URL(
+          astroConfig?.base ?? '/',
+          astroConfig.site
         ).href
 
         if (!isSSR) {

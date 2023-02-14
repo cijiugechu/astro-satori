@@ -44,6 +44,7 @@
     "gray-matter": "^4.0.3",
     "kleur": "^4.1.5",
     "satori": "^0.2.3",
+    "satori-html": "^0.3.2",
     "url-join": "^5.0.0"
   }
 }

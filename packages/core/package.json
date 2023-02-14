@@ -1,6 +1,6 @@
 {
   "name": "astro-satori",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "This Astro integration brings satori to your Astro project.",
   "private": false,
   "type": "module",

@@ -1,6 +1,7 @@
 import type { AstroIntegration, AstroConfig } from 'astro'
 import type { SatoriOptions } from 'satori'
 import satori from 'satori'
+import urlJoin from 'url-join'
 import { readFile, writeFile } from 'fs/promises'
 import { cwd } from 'process'
 import grayMatter from 'gray-matter'
@@ -26,15 +27,7 @@ const genOgAndReplace = async (
     return
   }
 
-  const ogUrl = (() => {
-    const siteURL = new URL(site)
-
-    if (siteURL.pathname === '/') {
-      return new URL(route, site).href
-    } else {
-      return `${site}${route.slice(1)}`
-    }
-  })()
+  const ogUrl = urlJoin(site, route)
 
   const generateOgImage = async (frontmatter: FrontMatter) => {
     const generateOptions = optionsFactory ?? defaultGenerateOptions
@@ -74,7 +67,7 @@ const genOgAndReplace = async (
   const relativeSvgPath = `/${basename(svgPath)}`
 
   const ogMetaToBeInserted = ogTemplate({
-    relativePath: relativeSvgPath,
+    imageHref: urlJoin(ogUrl, relativeSvgPath),
     width,
     height,
     title: parsedFrontMatter.title,
@@ -112,10 +105,7 @@ function Satori(options: SatoriIntegrationOptions = {}): AstroIntegration {
           return
         }
 
-        const site = new URL(
-          astroConfig?.base ?? '/',
-          astroConfig.site
-        ).href
+        const site = urlJoin(astroConfig.site, astroConfig?.base ?? '/')
 
         if (!isSSR) {
           try {

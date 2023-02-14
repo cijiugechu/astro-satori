@@ -1,25 +1,18 @@
 const ogTemplate = ({
-  relativePath,
+  imageHref,
   title,
   description,
   width,
   height,
   ogUrl,
 }: {
-  relativePath: string
+  imageHref: string
   title: string
   description: string
   width: number
   height: number
   ogUrl: string
 }) => {
-  const imageHref = (() => {
-    if (ogUrl.endsWith('/')) {
-      return `${ogUrl}${relativePath.slice(1)}`
-    } else {
-      return `${ogUrl}${relativePath}`
-    }
-  })()
 
   return `
 <meta property="og:type" content="website" >

@@ -23,10 +23,12 @@ importers:
       satori: ^0.2.3
       tsup: ^6.5.0
       typescript: ^4.9.5
+      url-join: ^5.0.0
     dependencies:
       gray-matter: 4.0.3
       kleur: 4.1.5
       satori: 0.2.3
+      url-join: 5.0.0
     devDependencies:
       '@types/node': 18.13.0
       astro: 2.0.10_@types+node@18.13.0
@@ -3459,6 +3461,11 @@ packages:
       browserslist: 4.21.5
       escalade: 3.1.1
       picocolors: 1.0.0
+
+  /url-join/5.0.0:
+    resolution: {integrity: sha512-n2huDr9h9yzd6exQVnH/jU5mr+Pfx08LRXXZhkLLetAMESRj+anQsTAh940iMrIetKAmry9coFuZQ2jY8/p3WA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: false
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

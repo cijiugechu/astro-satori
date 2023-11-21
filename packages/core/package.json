@@ -35,7 +35,7 @@
   },
   "bugs": "https://github.com/cijiugechu/astro-satori/issues",
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^20.0.0",
     "astro": "^2.0.10",
     "tsup": "^6.5.0",
     "typescript": "^4.9.5"
